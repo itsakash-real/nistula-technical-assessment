@@ -87,7 +87,7 @@ nistula-technical-assessment/
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/YOUR_USERNAME/nistula-technical-assessment.git
+git clone https://github.com/itsakash-real/nistula-technical-assessment.git
 cd nistula-technical-assessment
 ```
 
