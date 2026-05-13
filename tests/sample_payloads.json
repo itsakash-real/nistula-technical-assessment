@@ -1,0 +1,121 @@
+{
+  "test_cases": [
+    {
+      "id": "TC-01",
+      "description": "Pre-sales availability + pricing — multi-intent, should trigger confidence penalty",
+      "expected_query_type": "complaint",
+      "expected_action": "escalate",
+      "payload": {
+        "source": "whatsapp",
+        "guest_name": "Rahul Sharma",
+        "message": "Is the villa available from April 20 to 24? What is the rate for 2 adults?",
+        "timestamp": "2026-05-05T10:30:00Z",
+        "booking_ref": "NIS-2024-0891",
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-02",
+      "description": "Post-sales check-in — exact facts available, should score highest confidence",
+      "expected_query_type": "post_sales_checkin",
+      "expected_action": "auto_send",
+      "payload": {
+        "source": "airbnb",
+        "guest_name": "Priya Mehta",
+        "message": "Hi, what is the wifi password and what time can we check in?",
+        "timestamp": "2026-05-06T09:00:00Z",
+        "booking_ref": "NIS-2024-0445",
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-03",
+      "description": "Complaint — 3am hot water emergency, must always escalate regardless of score",
+      "expected_query_type": "complaint",
+      "expected_action": "escalate",
+      "payload": {
+        "source": "direct",
+        "guest_name": "Arjun Nair",
+        "message": "There is no hot water and we have guests arriving for breakfast in 4 hours. This is unacceptable. I want a refund for tonight.",
+        "timestamp": "2026-05-07T03:00:00Z",
+        "booking_ref": "NIS-2024-0782",
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-04",
+      "description": "Special request — chef and airport transfer, requires ops confirmation",
+      "expected_query_type": "special_request",
+      "expected_action": "agent_review",
+      "payload": {
+        "source": "booking_com",
+        "guest_name": "Sofia Fernandes",
+        "message": "Can we arrange an airport transfer from Goa airport on April 20? Also interested in booking a chef for dinner that evening.",
+        "timestamp": "2026-05-08T14:00:00Z",
+        "booking_ref": null,
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-05",
+      "description": "General enquiry — pets policy, ambiguous phrasing should reduce confidence",
+      "expected_query_type": "general_enquiry",
+      "expected_action": "agent_review",
+      "payload": {
+        "source": "instagram",
+        "guest_name": "Kabir Anand",
+        "message": "Hi, I am not sure if you allow pets? We are thinking about bringing our dog, maybe a small one.",
+        "timestamp": "2026-05-09T11:00:00Z",
+        "booking_ref": null,
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-ERR-01",
+      "description": "Invalid source — should return 422 validation error",
+      "expected_status": 422,
+      "payload": {
+        "source": "telegram",
+        "guest_name": "Test User",
+        "message": "Test message",
+        "timestamp": "2026-05-05T10:30:00Z",
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-ERR-02",
+      "description": "Empty message — should return 422 validation error",
+      "expected_status": 422,
+      "payload": {
+        "source": "whatsapp",
+        "guest_name": "Test User",
+        "message": "",
+        "timestamp": "2026-05-05T10:30:00Z",
+        "property_id": "villa-b1"
+      }
+    },
+    {
+      "id": "TC-ERR-03",
+      "description": "Missing required field — property_id absent, should return 422",
+      "expected_status": 422,
+      "payload": {
+        "source": "whatsapp",
+        "guest_name": "Test User",
+        "message": "Is the villa available?",
+        "timestamp": "2026-05-05T10:30:00Z"
+      }
+    },
+    {
+      "id": "TC-ERR-04",
+      "description": "Bad timestamp format — should return 422 validation error",
+      "expected_status": 422,
+      "payload": {
+        "source": "whatsapp",
+        "guest_name": "Test User",
+        "message": "Is the villa available?",
+        "timestamp": "not-a-timestamp",
+        "property_id": "villa-b1"
+      }
+    }
+  ]
+}
